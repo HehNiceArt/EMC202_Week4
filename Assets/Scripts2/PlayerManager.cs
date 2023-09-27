@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager instance { get; private set; }
+    public static PlayerManager Instance { get; private set; }
     //Player GameObject
     public GameObject player;
+    public Rigidbody rigidBody;
     //PlayerScrpts
-    InputManager inputManager;
+    public InputManager inputManager;
     PlayerLocomotor playerLocomotor;
     //Player Stats
+    [Range(0f, 1f)]
     public float movementSpeed;
+    [Range(0f, 1f)]
     public float rotationSpeed;
 
     public void Awake()
     {
         //if two or more instance, delete self, else use self
-        if(instance != null && instance != this) { Destroy(this); }
-        else { instance = this; }
-        inputManager = GetComponent<InputManager>();
-        playerLocomotor = GetComponent<PlayerLocomotor>();
+        if(Instance != null && Instance != this) { Destroy(this); }
+        else { Instance = this; }
+        inputManager = player.GetComponent<InputManager>();
+        playerLocomotor = player.GetComponent<PlayerLocomotor>();
+        rigidBody = player.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
