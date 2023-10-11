@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    public Animator playerAnim;
-    // Start is called before the first frame update
-    void Start()
+    int horizontal, vertical;
+
+    private void Awake()
     {
-        playerAnim= GetComponentInChildren<Animator>();
+        horizontal = Animator.StringToHash("Horizontal");
+        vertical = Animator.StringToHash("Vertical");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        Debug.Log("Horz: " + horizontal);
+        Debug.Log("Vert: " + vertical);    
+    }
+
+    public void UpdateAnimatorValues(float horizontalMove, float verticalMove)
+    {
+        //damp time = blend time || 0.1f
+        PlayerManager.Instance.playerAnim.SetFloat(horizontal,horizontalMove, 0.1f, Time.deltaTime);
+        PlayerManager.Instance.playerAnim.SetFloat(vertical, verticalMove, 0.1f, Time.deltaTime);
     }
 }

@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    
     public static PlayerManager Instance { get; private set; }
+    [Header("Game Object")]
     //Player GameObject
     public GameObject player;
     public Rigidbody rigidBody;
     //PlayerScrpts
+    [Header("Player Script")]
     public InputManager inputManager;
     PlayerLocomotor playerLocomotor;
     //Player Stats
-    [Range(0f, 1f)]
+    [Header("Player Stats")]
+    [Range(0f, 5f)]
     public float movementSpeed;
     [Range(0f, 1f)]
     public float rotationSpeed;
+    [Header("Animation")]
+    public PlayerAnimation playerAnimation;
+    public Animator playerAnim;
 
     public void Awake()
     {
@@ -25,6 +32,8 @@ public class PlayerManager : MonoBehaviour
         inputManager = player.GetComponent<InputManager>();
         playerLocomotor = player.GetComponent<PlayerLocomotor>();
         rigidBody = player.GetComponent<Rigidbody>();
+        playerAnim = player.GetComponentInChildren<Animator>();
+        playerAnimation = player.GetComponentInChildren<PlayerAnimation>();
     }
 
     // Update is called once per frame
