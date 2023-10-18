@@ -20,10 +20,17 @@ public class PlayerManager : MonoBehaviour
     public float movementSpeed;
     [Range(0f, 1f)]
     public float rotationSpeed;
+    public float sprintSpeed;
+    public float walkSpeed;
+
     [Header("Animation")]
     public PlayerAnimation playerAnimation;
     public Animator playerAnim;
 
+    [Header("Action States")]
+    public bool isSprinting;
+    public bool isWalking;
+    public bool isJumping;
     public void Awake()
     {
         //if two or more instance, delete self, else use self

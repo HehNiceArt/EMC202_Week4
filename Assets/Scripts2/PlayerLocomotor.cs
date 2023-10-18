@@ -27,25 +27,32 @@ public class PlayerLocomotor : MonoBehaviour
         moveDirection = moveDirection + cameraObject.right * PlayerManager.Instance.inputManager.horizontalInput;
         moveDirection.Normalize();
         moveDirection.y = 0;
-        moveDirection *= PlayerManager.Instance.movementSpeed;
+
+        if (PlayerManager.Instance.isSprinting) { moveDirection *= PlayerManager.Instance.sprintSpeed; }
+        else if(PlayerManager.Instance.isWalking) { moveDirection *= PlayerManager.Instance.walkSpeed;  }
+        else { moveDirection *= PlayerManager.Instance.movementSpeed; }
+        
         Vector3 movementVelocity = moveDirection;
         PlayerManager.Instance.rigidBody.velocity = movementVelocity;
     }
     private void HandleRotation()
+    {
+        
+        Quaternion targetRotation = Quaternion.LookRotation(TargetDirection());
+        Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, PlayerManager.Instance.rotationSpeed);
+        transform.rotation = playerRotation;
+
+        
+    }
+    private Vector3 TargetDirection()
     {
         Vector3 targetDirection = Vector3.zero;
         targetDirection = cameraObject.forward * PlayerManager.Instance.inputManager.verticalInput;
         targetDirection = targetDirection + cameraObject.right * PlayerManager.Instance.inputManager.horizontalInput;
         targetDirection.Normalize();
         targetDirection.y = 0;
-        if (targetDirection == Vector3.zero)
-        {
-            targetDirection = transform.forward;
-        }
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, PlayerManager.Instance.rotationSpeed);
-        transform.rotation = playerRotation;
 
-        
+        if (targetDirection == Vector3.zero) { targetDirection = transform.forward; }
+        return targetDirection;
     }
 }
